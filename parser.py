@@ -66,11 +66,12 @@ class Parser:
                 return []
             return [p[0]]
 
-        @self.pg.production('statement_list : statement NEWLINE')
-        def single_to_list(p):
-            if p[0] is None:
-                return []
-            return [p[0]]
+        #
+        # @self.pg.production('statement_list : statement NEWLINE')
+        # def single_to_list(p):
+        #     if p[0] is None:
+        #         return []
+        #     return [p[0]]
 
         @self.pg.production('statement : NEWLINE')
         def newline_stmt(_):
