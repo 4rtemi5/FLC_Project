@@ -195,7 +195,7 @@ class Variable:
 
 
 class IfElse:
-    def __init__(self, builder, module, condition, if_body, else_body):
+    def __init__(self, builder, module, condition, if_body, else_body=None):
         self.builder = builder
         self.module = module
         self.condition = condition
@@ -206,10 +206,13 @@ class IfElse:
         with self.builder.if_else(self.condition.eval()) as (then, otherwise):
             with then:
                 for s in self.if_body:
-                    s.eval()
+                    if s is not None:
+                        s.eval()
             with otherwise:
-                for s in self.else_body:
-                    s.eval()
+                if self.else_body is not None:
+                    for s in self.else_body:
+                        if s is not None:
+                            s.eval()
 
 
 class While:

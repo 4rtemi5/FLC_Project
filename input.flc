@@ -9,7 +9,13 @@ let im_so_cool = 1
 print(- im_so_cool - - 1+1)
 print(im_so_cool)
 
-if (2>1) {if(2<4){print(11111)}} else {print(100)}
+if (2>1) {
+    if(2<4){
+        print(11111)
+    }
+} else {
+    print(100)
+}
 
 let loopvar = 10
 

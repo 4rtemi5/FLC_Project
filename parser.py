@@ -45,11 +45,26 @@ class Parser:
         def parse_main(p):
             return MainFunction(self.builder, self.module, self.printf, p[0])
 
+        @self.pg.production('statement_list : statement_list statement_list')
+        def stmt_expr_arg_list(p):
+            if not p[0]:
+                return p[1]
+            elif not p[1]:
+                return p[0]
+            else:
+                return p[0] + p[1]
+
         @self.pg.production('statement_list : statement_list statement')
         def stmt_expr_arg_list(p):
             if p[1] is None:
                 return p[0]
             return p[0] + [p[1]]
+
+        @self.pg.production('statement_list : statement')
+        def one_to_list(p):
+            if p[0] is None:
+                return []
+            return [p[0]]
 
         @self.pg.production('statement_list : statement NEWLINE')
         def single_to_list(p):
@@ -78,9 +93,10 @@ class Parser:
             if_block = p[4]
             if len(p) > 5:
                 else_block = p[6]
+                return IfElse(self.builder, self.module, cond, if_block, else_block)
             else:
-                else_block = []
-            return IfElse(self.builder, self.module, cond, if_block, else_block)
+                return IfElse(self.builder, self.module, cond, if_block)
+
 
         @self.pg.production('statement : WHILE ( expression ) block ')
         def if_cond(p):
@@ -89,7 +105,7 @@ class Parser:
             return While(self.builder, self.module, cond, if_block)
 
         @self.pg.production('block : { statement_list }')
-        def block(p):
+        def sblock(p):
             return p[1]
 
         @self.pg.production('block : { statement }')
